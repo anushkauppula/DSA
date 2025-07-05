@@ -1,0 +1,39 @@
+--My code O(n), O(1)
+class Solution {
+    public void moveZeroes(int[] nums) {
+        int i = 0, j = 1;
+        while (j < nums.length) {
+            if (nums[i] == 0 && nums[j] != 0) {
+                // swap
+                nums[i] = nums[j];
+                nums[j] = 0;
+                i++;
+                j++;
+            } else if (nums[i] == 0 && nums[j] == 0) {
+                j++;
+            } else {
+                i++;
+                j = i + 1;
+            }
+        }
+    }
+}
+
+--Optimized O(n) O(1)
+class Solution {
+    public void moveZeroes(int[] nums) {
+        int insertPos = 0;
+
+        // Step 1: Move non-zero elements to the front
+        for (int num : nums) {
+            if (num != 0) {
+                nums[insertPos++] = num;
+            }
+        }
+
+        // Step 2: Fill the rest with 0s
+        while (insertPos < nums.length) {
+            nums[insertPos++] = 0;
+        }
+    }
+}

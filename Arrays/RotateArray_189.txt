@@ -1,4 +1,4 @@
---- Brute Force -- still fails edge case 
+--- Brute Force -- still fails edge case T-O(n*k) S-O(1)
 class Solution {
     public void rotate(int[] nums, int k) {
         for(int i = 1; i <= k; i++){
@@ -18,7 +18,7 @@ class Solution {
     }
 }
 
----Optimized code
+---Optimized code T-O(n) S-O(1)
 class Solution {
     public void rotate(int[] nums, int k) {
         int n = nums.length;
