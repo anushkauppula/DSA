@@ -21,19 +21,21 @@ class Solution {
 ---Optimized code
 class Solution {
     public void rotate(int[] nums, int k) {
-        for(int i = 1; i <= k; i++){
-            int temp = 0;
-            for(int j=nums.length-1; j>=0; j--){
-                if(j == nums.length-1){                    
-                    temp = nums[j];
-                }else{
-                    nums[j+1] = nums[j];
-                }     
+        int n = nums.length;
+        k = k % n; //this handles k > n
 
-                if(j==0){
-                    nums[j] = temp;
-                }                           
-            }
+        reverse(nums, 0, n - 1);       // Step 1 full reverse
+        reverse(nums, 0, k - 1);       // Step 2 reverse k elements
+        reverse(nums, k, n - 1);       // Step 3 reverse n-k elements
+    }
+
+    private void reverse(int[] nums, int start, int end) {
+        while (start < end) {
+            int temp = nums[start];
+            nums[start] = nums[end];
+            nums[end] = temp;
+            start++;
+            end--;
         }
     }
 }
