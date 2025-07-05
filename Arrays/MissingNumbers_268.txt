@@ -1,0 +1,33 @@
+-- My Code O(n), O(1)
+class Solution {
+    public int missingNumber(int[] nums) {
+        int n = nums.length;
+        int totalSum = (n*(n+1))/2;
+
+        int sum = 0;
+
+        for(int i=0; i< n; i++){
+            sum+= nums[i];
+        }
+
+        return totalSum - sum;
+    }
+}
+
+-- same but good for larger inputs using xor
+class Solution {
+    public int missingNumber(int[] nums) {
+        int n = nums.length;
+        int xor = 0;
+
+        // XOR all indices and values
+        for (int i = 0; i < n; i++) {
+            xor ^= i ^ nums[i];
+        }
+
+        // XOR the last number (n)
+        xor ^= n;
+
+        return xor;
+    }
+}
