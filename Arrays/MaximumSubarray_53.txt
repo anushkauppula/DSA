@@ -1,4 +1,4 @@
---Optimized Kadanes Algo - O(n) , O(1)
+--Optimized Kadane's Algo - O(n) , O(1)
 class Solution {
     public int maxSubArray(int[] nums) {
         int max = nums[0];
@@ -18,3 +18,37 @@ class Solution {
         return max;
     }
 }
+
+
+print subarray:
+class Solution {
+    public int[] maxSubArray(int[] nums) {
+        int max = nums[0];
+        int sum = nums[0];
+        int start = 0, end = 0, tempStart = 0;
+
+        for (int i = 1; i < nums.length; i++) {
+            if (sum < 0) {
+                sum = nums[i];
+                tempStart = i; // start new subarray
+            } else {
+                sum += nums[i];
+            }
+
+            if (sum > max) {
+                max = sum;
+                start = tempStart;
+                end = i;
+            }
+        }
+
+        // Build result subarray from start to end
+        int[] result = new int[end - start + 1];
+        for (int i = start; i <= end; i++) {
+            result[i - start] = nums[i];
+        }
+
+        return result;
+    }
+}
+
