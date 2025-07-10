@@ -60,4 +60,68 @@ class Solution {
     }
 }
 
---Optimized 
+--Optimized - small tweak to the code. O(n log (max-min+1)), O(1) 
+class Solution {
+    public int minDays(int[] bloomDay, int m, int k) {
+        int low = min(bloomDay);
+        int high = max(bloomDay);
+
+        if(bloomDay.length < m*k){ return -1; }
+        
+        while(low <= high){
+            int mid = (low + high) / 2;
+            
+            boolean noOfBouquets = noOfBouquets(bloomDay, mid, m, k);
+            if(noOfBouquets){
+                high = mid - 1;
+            }else{ 
+                low = mid + 1;
+            }
+        }
+
+        return low;
+    }
+
+    public static boolean noOfBouquets(int[] bloomDay, int day, int m, int k){
+        int count = 0; int noOfBs=0;
+        for(int i=0; i<bloomDay.length; i++){
+            if(bloomDay[i] <= day){                
+                count++;
+            }else{
+                noOfBs += count/k;
+                count = 0;
+            }
+        }
+
+        noOfBs += count/k;
+        if(noOfBs >= m){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public static int max(int[] bloomDay){
+        int max = Integer.MIN_VALUE;
+
+        for(int i = 0; i< bloomDay.length; i++){
+            if(max < bloomDay[i]){
+                max = bloomDay[i];
+            }
+        }
+
+        return max;
+    }
+
+    public static int min(int[] bloomDay){
+        int min = Integer.MAX_VALUE;
+
+        for(int i = 0; i< bloomDay.length; i++){
+            if(min > bloomDay[i]){
+                min = bloomDay[i];
+            }
+        }
+
+        return min;
+    }
+}
