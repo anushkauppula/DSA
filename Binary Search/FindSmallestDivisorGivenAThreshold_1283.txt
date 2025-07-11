@@ -1,0 +1,48 @@
+-- Optimized O(n log(max)), O(1)
+class Solution {
+    public int smallestDivisor(int[] nums, int threshold) {
+        int low = 1;
+        int high = max(nums);
+        int ans = 0;
+        while(low <= high){
+            int mid = (low + high) / 2;
+                        
+            int total = findTotal(nums, mid);
+            if(total <= threshold){
+                ans = mid;
+                high = mid - 1;
+            }else{
+                low = mid + 1;
+            }            
+        }
+        return ans;
+    }
+
+    public static int findTotal(int[] nums, int mid){
+        int total = 0;
+        for(int i = 0; i<nums.length; i++){
+            total+= (int)Math.ceil((double)nums[i]/mid);
+        }
+        return total;
+    }
+
+    public static int max(int[] nums){
+        int max = Integer.MIN_VALUE;
+        for(int i=0; i<= nums.length-1; i++){
+            if(max < nums[i]){
+                max = nums[i];
+            }
+        }
+        return max;
+    }
+
+    public static int min(int[] nums){
+        int min = Integer.MAX_VALUE;
+        for(int i=0; i<= nums.length-1; i++){
+            if(min > nums[i]){
+                min = nums[i];
+            }
+        }
+        return min;
+    }
+}
