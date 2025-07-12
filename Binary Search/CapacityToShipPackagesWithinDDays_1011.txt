@@ -1,0 +1,53 @@
+---Optimized O(n log(sum-max + 1)), O(1)
+class Solution {
+    public int shipWithinDays(int[] weights, int days) {
+        int low = max(weights);
+        int high = sumOfWeights(weights);
+        int ans = Integer.MAX_VALUE;
+        while(low <= high){
+            int mid = (low + high)/2;
+            int possDays = possibleDays(weights, mid);
+
+            if(possDays <= days){
+                high = mid - 1;
+            }else{
+                low = mid + 1;
+            }
+        }
+
+        return low;
+    }
+
+    public static int possibleDays(int[] weights, int mid){
+        int sum = 0; int days=1;
+        for(int i = 0; i< weights.length; i++){
+            if((sum + weights[i]) <= mid){
+                sum += weights[i];
+            }else{
+                days++;
+                sum = weights[i];
+            }            
+        }
+        return days;
+    }
+
+    public static int sumOfWeights(int[] weights){
+        int sum = 0;
+        for(int i = 0; i<= weights.length-1; i++){
+            sum += weights[i];
+        }
+
+        return sum;
+    }
+
+    public static int max(int[] weights){
+        int max = Integer.MIN_VALUE;
+        for(int i = 0; i<= weights.length-1; i++){
+            if(max < weights[i]){
+                max = weights[i];
+            }            
+        }
+        
+        return max;
+    }
+}
