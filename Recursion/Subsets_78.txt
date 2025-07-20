@@ -1,0 +1,42 @@
+-- O(2^n * n), O(1)
+class Solution {
+    public List<List<Integer>> subsets(int[] nums) {
+        int n = nums.length;
+        List<List<Integer>> res = new ArrayList<>();
+        for(int i=0; i < (1 << n); i++){            
+            List<Integer> arr = new ArrayList<>();
+            for(int j=0; j < n; j++){
+                if((i & (1 << j)) != 0){
+                    arr.add(nums[j]);
+                }
+            }
+            res.add(arr);
+        }
+
+        return res;
+    }
+}
+
+-- Recursive & Backtracking O(2^n * n), O(2^n * n) output + O(n) recursive stack
+class Solution {
+    public List<List<Integer>> subsets(int[] nums) {
+        int n = nums.length;
+        List<List<Integer>> res = new ArrayList<>();
+        
+        findSubsets(0, nums, new ArrayList<Integer>(), res);
+
+        return res;
+    }
+
+    public void findSubsets(int i, int[] nums, List<Integer> arr, List<List<Integer>> res){
+        if(i == nums.length){
+            res.add(new ArrayList<>(arr));
+            return;
+        }
+
+        arr.add(nums[i]);
+        findSubsets(i + 1, nums, arr, res);
+        arr.remove(arr.size() - 1);
+        findSubsets(i + 1, nums, arr, res);
+    }
+}
