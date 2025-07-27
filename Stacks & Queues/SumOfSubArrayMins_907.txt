@@ -1,0 +1,40 @@
+//O(n), O(n)
+class Solution {
+    public int sumSubarrayMins(int[] arr) {
+        int n = arr.length;
+        int[] prevLess = new int[n];
+        int[] nextLess = new int[n];
+        Stack<Integer> st = new Stack<>();
+
+        // prev less elem
+        for(int i = 0; i < n; i++){
+            while(!st.isEmpty() && arr[st.peek()] > arr[i]){
+                st.pop();
+            }
+
+            prevLess[i] = st.isEmpty() ? i + 1 : i - st.peek();
+            st.push(i);
+        }
+
+        st.clear();
+
+        // Next less elem
+        for(int i = n-1; i >= 0; i--){
+            while(!st.isEmpty() && arr[st.peek()] >= arr[i]){
+                st.pop();
+            }
+
+            nextLess[i] = st.isEmpty() ? n - i : st.peek() - i;
+            st.push(i);
+        }
+
+        long res = 0;
+        int MOD = (int)(1e9 + 7);
+        for(int i = 0; i < n; i++){
+            long count = (long)prevLess[i] * nextLess[i];
+            res = (res + count * arr[i]) % MOD;
+        }
+
+        return (int)res;
+    }
+}
