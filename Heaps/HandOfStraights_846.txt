@@ -1,0 +1,34 @@
+//O(n log n), O(n) min heap and kind of greedy
+class Solution {
+    public boolean isNStraightHand(int[] hand, int groupSize) {
+        if(hand.length % groupSize != 0) return false;
+
+        Map<Integer, Integer> freq = new HashMap<>();
+
+        for(int card : hand){
+            freq.put(card, freq.getOrDefault(card, 0) + 1);
+        }
+
+        PriorityQueue<Integer> minHeap = new PriorityQueue<>(freq.keySet());
+        
+        while(!minHeap.isEmpty()){
+            int first = minHeap.peek();
+
+            for(int i = 0; i < groupSize; i++){
+                int current = first + i;
+
+                if(!freq.containsKey(current)) return false;
+
+                freq.put(current, freq.get(current) - 1);
+
+                if(freq.get(current) == 0){
+                    if(current != minHeap.peek()) return false;
+
+                    minHeap.poll();
+                }
+            }
+        }
+
+        return true;
+    }
+}
