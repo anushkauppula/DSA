@@ -1,0 +1,61 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+
+//O(nlog n), O(n)
+class Solution {
+    public ListNode mergeKLists(ListNode[] lists) {
+        PriorityQueue<Integer> p = new PriorityQueue<>();
+        for(int i = 0; i < lists.length; i++){
+            ListNode node = lists[i];
+            while(node != null){                
+                p.add(node.val);
+                node = node.next;
+            }
+        }
+        ListNode head = new ListNode(-1);
+        ListNode temp = head;
+        while(p.size() > 0){
+            ListNode node = new ListNode(p.remove());
+            head.next = node;
+            head = head.next;
+        }
+
+        return temp.next;
+    }
+}
+
+//Optimized O(nlogk), O(k)
+class Solution {
+    public ListNode mergeKLists(ListNode[] lists) {
+        PriorityQueue<ListNode> p = new PriorityQueue<>((a,b) -> a.val - b.val);
+
+        for(ListNode node : lists){
+            if(node != null){
+                p.add(node);
+            }
+        }
+
+        ListNode head = new ListNode(-1);
+        ListNode curr = head;
+
+        while(!p.isEmpty()){
+            ListNode node = p.poll();
+            curr.next = node;
+            curr = curr.next;
+
+            if(node.next != null){
+                p.add(node.next);
+            }
+        }
+
+        return head.next;
+    }
+}
