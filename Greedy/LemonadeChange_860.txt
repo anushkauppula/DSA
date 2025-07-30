@@ -1,0 +1,55 @@
+// this is also correct but fails for larger inputs O(n), O(1)
+class Solution {
+    public boolean lemonadeChange(int[] bills) {
+        int totalReceived = 0; int change = 0;
+        for(int i = 0; i < bills.length; i++){
+            if(bills[i] == 5 || bills[i] == 10 || bills[i] == 20){
+                if(bills[i] > 5){
+                    change = bills[i] - 5;
+                    if(change > totalReceived){
+                        return false;
+                    } 
+                    totalReceived -= change;
+                }
+
+                totalReceived += 5;
+            }
+        }
+
+        return true;
+    }
+}
+
+// this works for larger inputs O(n), O(1)
+class Solution {
+    public boolean lemonadeChange(int[] bills) {
+        int five = 0; int ten = 0;
+
+        for(int i = 0; i < bills.length; i++){
+            if(bills[i] == 5){
+                five++;
+            }
+            else if(bills[i] == 10){
+                if(five > 0){
+                    five-= 1;
+                    ten++;
+                }else{
+                    return false;
+                }
+            }else if(bills[i] == 20){
+                if(ten > 0 && five > 0){
+                    ten -= 1;
+                    five -= 1;
+                }else if(five >= 3){
+                    five -= 3;
+                }else{
+                    return false;
+                }
+            }else{
+                return false;
+            }
+        }
+
+        return true;
+    }
+}
