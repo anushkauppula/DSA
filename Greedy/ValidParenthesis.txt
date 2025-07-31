@@ -1,0 +1,57 @@
+//this fails for edge cases like all **,  O(3^k), O(n) k is no of '*', n is length of string 
+class Solution {
+    public boolean checkValidString(String s) {
+        return recursiveValidString(s, 0, 0);
+    }
+
+    public boolean recursiveValidString(String s, int index, int count){
+        if(count < 0) return false;
+
+        if(s.length() == index){
+            if(count == 0){
+                return true;  
+            }else{
+                return false;
+            }
+        }
+
+        if(s.charAt(index) == '('){
+            return recursiveValidString(s, index + 1, count + 1);
+        }
+
+        if(s.charAt(index) == ')'){
+            return recursiveValidString(s, index + 1, count - 1);
+        }
+
+        return recursiveValidString(s, index + 1, count + 1) || recursiveValidString(s, index + 1, count-1) || recursiveValidString(s, index + 1, count);
+    }
+}
+
+// greedy O(n), O(1)
+class Solution {
+    public boolean checkValidString(String s) {
+        int high = 0; int low = 0;
+
+        for(char c : s.toCharArray()){
+            if(c == '('){
+                low++;
+                high++;
+            }
+            else if(c == ')'){
+                if(low > 0) {
+                    low--;
+                }
+                high--;
+            }else{
+                if(low > 0){
+                    low--;
+                }
+                high++;
+            }
+
+            if(high < 0) return false;
+        }
+
+        return low == 0;
+    }
+}
