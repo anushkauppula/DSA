@@ -1,0 +1,17 @@
+// Most Optimal solution O(n), O(1)
+class Solution {
+    public boolean canJump(int[] nums) {
+        int max = 0;
+        for(int i = 0; i < nums.length; i++){
+            if(i > max){
+                return false;
+            }
+            int sum = i + nums[i];
+            max = Math.max(max, sum);
+            if(max >= nums.length){
+                return true;
+            }
+        }
+        return true;
+    }
+}
