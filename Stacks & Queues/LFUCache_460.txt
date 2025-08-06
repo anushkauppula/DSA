@@ -1,0 +1,66 @@
+
+class LFUCache {
+
+    int capacity; 
+    Map<Integer, Integer> keyToVal;
+    Map<Integer, Integer> keyToFreq;
+    Map<Integer, LinkedHashSet<Integer>> freqToKeys;
+    int minFreq;
+
+    public LFUCache(int capacity) {
+        this.capacity = capacity;
+        minFreq = 0;
+        keyToVal = new HashMap<>();
+        keyToFreq = new HashMap<>();
+        freqToKeys = new HashMap<>();
+    }
+
+    public int get(int key) {
+        if(!keyToVal.containsKey(key)){
+            return -1;
+        }
+
+        int freq = keyToFreq.get(key);
+        keyToFreq.put(key, freq + 1);
+
+        freqToKeys.get(freq).remove(key);
+        if(freqToKeys.get(freq).isEmpty()){
+             freqToKeys.remove(freq);
+             if(minFreq == freq){
+                minFreq++;
+             }
+        }
+
+        freqToKeys.computeIfAbsent(freq + 1, f -> new LinkedHashSet<>()).add(key);
+        return keyToVal.get(key);
+    }
+
+    public void put(int key, int value) {
+        if(capacity == 0){
+            return;
+        }
+
+        if(keyToVal.containsKey(key)){
+            keyToVal.put(key, value);
+            get(key);
+            return;
+        }
+
+        if(keyToVal.size() >= capacity){
+            LinkedHashSet<Integer> keys = freqToKeys.get(minFreq);
+            int evictKey = keys.iterator().next();
+            keys.remove(evictKey);
+            if(keys.isEmpty()){
+                freqToKeys.remove(minFreq);
+            }
+
+            keyToVal.remove(evictKey);
+            keyToFreq.remove(evictKey);
+        }
+
+        keyToVal.put(key, value);
+        keyToFreq.put(key, 1);
+        freqToKeys.computeIfAbsent(1, f -> new LinkedHashSet<>()).add(key);
+        minFreq = 1;
+    }
+}
