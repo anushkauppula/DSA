@@ -1,0 +1,35 @@
+// O(m*n), O(m*n)
+class Solution {
+    public int[][] floodFill(int[][] image, int sr, int sc, int color) {
+        int originalColor = image[sr][sc];
+        if(originalColor == color){
+            return image;
+        }
+        
+        image[sr][sc]=color;
+
+        int rows = image.length; int cols = image[0].length;
+        Queue<int[]> q = new LinkedList<>();
+        q.offer(new int[]{ sr, sc});
+
+        int[][] directions = { {1, 0}, {-1, 0}, {0, 1}, {0, -1} };
+
+        while(!q.isEmpty()){
+            int[] cur = q.poll();
+            int r = cur[0]; int c = cur[1];
+
+            for(int[] d : directions){
+                int nr = r + d[0];
+                int nc = c + d[1];
+
+                if(nr >= 0 && nr < rows && nc >= 0 && nc < cols
+                    && image[nr][nc] == originalColor){
+                        image[nr][nc] = color;
+                        q.offer(new int[]{ nr, nc });
+                    }
+            }
+        }
+        
+        return image;
+    }
+}
