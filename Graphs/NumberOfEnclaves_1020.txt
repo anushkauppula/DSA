@@ -1,0 +1,61 @@
+// O(m*n), O(m*n)
+class Solution {
+    public int numEnclaves(int[][] grid) {
+        if(grid == null){
+            return 0;
+        }
+
+        int count = 0, rows = grid.length, cols = grid[0].length;
+        Queue<int[]> q = new LinkedList<>();
+
+        for(int r = 0; r < rows; r++){
+            if(grid[r][0] == 1){
+                q.offer(new int[] {r, 0});
+                grid[r][0] = 0;
+            }
+
+            if(grid[r][cols - 1] == 1){
+                q.offer(new int[] {r, cols - 1});
+                grid[r][cols - 1] = 0;
+            }
+        }
+
+        for(int c = 0; c < cols; c++){
+            if(grid[0][c] == 1){
+                q.offer(new int[] {0, c});
+                grid[0][c] = 0;
+            }
+
+            if(grid[rows - 1][c] == 1){
+                q.offer(new int[] {rows - 1, c});
+                grid[rows - 1][c] = 0;
+            }
+        }
+
+        int[][] directions = {{1,0},{-1,0},{0,1},{0,-1}};
+
+        while(!q.isEmpty()){
+            int[] cur = q.poll();
+            int r = cur[0], c = cur[1];
+
+            for(int[] d : directions){
+                int nr = r + d[0], nc = c + d[1];
+
+                if(nr >= 0 && nr < rows && nc >= 0 && nc < cols && grid[nr][nc] == 1){
+                    grid[nr][nc] = 0;
+                    q.offer(new int[] {nr, nc});
+                }
+            }
+        }
+
+        for(int r = 0; r < rows; r++){
+            for(int c = 0; c < cols; c++){
+                if(grid[r][c] == 1){
+                    count++;
+                }
+            }
+        }
+
+        return count;
+    }
+}
