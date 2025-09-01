@@ -1,0 +1,17 @@
+// O(n), O(n)
+class Solution {
+    public boolean containsDuplicate(int[] nums) {
+        SetInteger h = new HashSet();
+
+        for(int num  nums){
+            if(!h.contains(num)){
+                h.add(num);
+            }else{
+                return true;
+            }           
+
+        }
+
+        return false;
+    }
+}
